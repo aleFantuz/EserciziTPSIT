@@ -7,8 +7,9 @@ BUFFER_SIZE = 4096  # Dimensione massima del buffer per la ricezione dei dati
 udp_client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 # Messaggio
-message = "Ciao Cava, sono Fant!"
-udp_client_socket.sendto(message.encode(), server_address)
+for i in range(10):
+    message = "Ciao Cava, sono Fant!"
+    udp_client_socket.sendto(message.encode(), server_address)
 
 data, server = udp_client_socket.recvfrom(BUFFER_SIZE)
 print(f"Risposta dal server: {data.decode()}")
