@@ -1,17 +1,23 @@
 import socket
+import time  # per inserire un breve ritardo tra i messaggi
 
-# Dati del server (indirizzo IP e porta)
-server_address = ("172.20.10.3", 6980)  # Inserire l'indirizzo IP del server e la porta; 
-BUFFER_SIZE = 4096  # Dimensione massima del buffer per la ricezione dei dati
+server_address = ("127.0.0.1", 6980)  #  IP del server e la porta
+BUFFER_SIZE = 4096 
+udp_client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # Creazione socket UDP del client
 
-udp_client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+# Invia 10 messaggi consecutivi al server
+for i in range(1, 11):
+    # Messaggio da inviare
+    message = f"Messaggio {i} dal Client!"
+    print(f"Invio: {message}")
+    
+    udp_client_socket.sendto(message.encode(), server_address)    # invio messaggio al server
+    
+    # Riceve la risposta dal server
+    data, server = udp_client_socket.recvfrom(BUFFER_SIZE)
+    print(f"Risposta dal server: {data.decode()}")
+    
+    time.sleep(1)
 
-# Messaggio
-for i in range(10):
-    message = "Ciao Cava, sono Fant!"
-    udp_client_socket.sendto(message.encode(), server_address)
-
-data, server = udp_client_socket.recvfrom(BUFFER_SIZE)
-print(f"Risposta dal server: {data.decode()}")
-
+# Chiusura del socket 
 udp_client_socket.close()
